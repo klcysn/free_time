@@ -12,7 +12,7 @@ show message came to you"""
 import user_registration
 from datetime import datetime
 
-def personal_menu(name, choise = "") : # name user_registration.online'dan geliyor
+def personal_menu(name, choise = "") : # name came from user_registration.online
     while name :
         if choise == "" :
             print(f"{name}'s Menu !")
@@ -33,24 +33,24 @@ def personal_menu(name, choise = "") : # name user_registration.online'dan geliy
                 break
             except :
                 print("Invalid value!, Please enter from 1 or 5 : ")
-                choise = 10 #en son except'de hata vermemesi için
+                choise = 10 #to not give error at last except
 
         if choise == 1 :
             friend_list()
 
         elif choise == 2 :
             friend = input("Please enter your friend's name : ").title()
-            add_friends(name = name, friend = friend) #sözlük olarak fonksiyona yolluyoruz.
+            add_friends(name = name, friend = friend) #we send it as dictionary.
  
         elif choise == 3 :
             friend = input("Please enter your friend's name you want to send message : ").title()
             for i in open("friends.txt", "r", encoding="utf-8").readlines() :
-                lst = i.split() # isimlere liste şeklinde ulaşmak için ["name", "friend"]
-                if lst[0] == name and friend == lst[1] : #friend'in arkadaş listemizde olup olmadığını kontrol ediyor.
+                lst = i.split() #  to make line list ["name", "friend"]
+                if lst[0] == name and friend == lst[1] : #it checks friend is in our friend list or not.
                     msg = input("Enter your message here : ")
                     msg_snd(name = name, friend = friend, message = msg, date = datetime.now())
-                    break # burada break yapmazsan else'i de okutur.
-            else : #eğer yoksa tekrar gönderiyor friend ismi girmeye
+                    break # it read also else without break.
+            else : #if we don't put this, it asks friend again
                 print(f"{friend} was not found in your friend's list")
                 personal_menu(name, choise = 3)
 
@@ -60,9 +60,9 @@ def personal_menu(name, choise = "") : # name user_registration.online'dan geliy
         elif choise == 5 :
             ext(name)
 
-        break # yapmazsak menüyü sonsuz olarak her işlem bittiğinde tekrar açar
+        break # it open personal menu after every function without break
         
-def add_friends(**data) : #sınırsız sözlük değeri alması için
+def add_friends(**data) : #to take endless input
     with open("friends.txt", "a", encoding="utf-8") as frnd :
         frnd.write(data["name"])
         frnd.write(" ")
@@ -78,20 +78,20 @@ def add_friends(**data) : #sınırsız sözlük değeri alması için
 
 
 def friend_list() :
-    friend_stiuation = True # eğer arkadaş yoksa aşağıda if'i print yapmak için
+    friend_stiuation = True # if there is no friend, it run if code is below
     for i in open("friends.txt", "r", encoding="utf-8").readlines() :
-        lst = i.split() # isimlere liste şeklinde ulaşmak için ["name", "friend"]
+        lst = i.split() # to make line list ["name", "friend"]
         if lst[0] == user_registration.online :
             print(lst[1])
             friend_stiuation = False
-    if friend_stiuation : print("You haven't had any friend yet.") #arkadaş yoksa burası çalışacak
+    if friend_stiuation : print("You haven't had any friend yet.") #if there is no friend, here runs
     answr = input("Would you like to go back menu(Y/N) :  ").capitalize()
     if answr == "Y" : personal_menu(user_registration.online)
     else : pass
 
 
 def msg_snd(**data) :
-    friend = data["friend"] # printin içinde kullanmak için aksi halde hata veriyor
+    friend = data["friend"] # to  use in print otherwise it gives error
     with open("message.txt", "a", encoding="utf-8") as m :
         m.write(data["name"])
         m.write(" ")
@@ -126,7 +126,7 @@ def msg_box(name) :
                 print("-" * 80)
         else :
             print("You have read all message!")
-            input("To continue press enter!") # print'i okuyana kadar bekletir daha sonra bir tuşa basınca altındaki işleme geçer 
+            input("To continue press enter!") # it makes you wait until press enter 
             personal_menu(name = name, choise = "")
 
 
@@ -136,13 +136,13 @@ def msg_box(name) :
             if box[0] == name :
                 print(f"Sent to {box[1]} ---> {' '.join(box[2:len(box) -2])} <---- in {' '.join(box[len(box) - 2:])}")
                 print("-" * 80)
-#' '.join(iterable) yapmazsan slice yaptığın değerleri liste içinde virgülle ayırarak veriyor. Tek tırnak olmasına dikkat et.
-# eğer mesajı yazdırırken varable'lar arasına boşluk yerine başka karater koysaydık "-" gibi spliti buradan yapardık ve join kullanmamıza gerek kalmazdı ve mesaj 4 değere böünmüş olurdu. Ama mesaj içerisinde geçmeyecek bir karakter olması gerekli örn;"||" gibi
+#' '.join(iterable) helps you to print text, not list
+# if we wrote with symbol like "||" in message.txt, we wouldn't have to use slice, and ' '.join()
         else :
             print("-" * 70)
             print("You have read all message!")
             print("-" * 70)
-            input("To continue press enter!") # print'i okuyana kadar bekletir daha sonra bir tuşa basınca altındaki işleme geçer 
+            input("To continue press enter!") # it makes you wait until press enter  
             personal_menu(name = name, choise = "")
 
 
@@ -154,7 +154,7 @@ def ext(name) :
     pass
 
 
-if __name__ == "__main__" : # eğer script direkt çalıştırılıyorsa burası çalışır
+if __name__ == "__main__" : #if script runs directly, here runs first 
 
     while True :
         print("""
@@ -179,7 +179,7 @@ if __name__ == "__main__" : # eğer script direkt çalıştırılıyorsa burası
                 try :
                     num = int(input("It was invalid entrance, Please enter your choise as 1 or 2 :").strip())
                 except :
-                    num = 10 # ne kadar except yazsanızda en son excepte numeric olmama hatası verir
+                    num = 10 #  to not give error at last except
         if num == 1 :
             user_registration.registration()
         elif num == 2 :
